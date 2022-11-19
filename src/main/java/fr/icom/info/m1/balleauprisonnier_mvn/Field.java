@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
@@ -18,7 +20,9 @@ import javafx.scene.paint.Color;
 public class Field extends Canvas {
 	
 	/** Joueurs */
-	Player [] joueurs = new Player[2];
+	Player [] joueurs = new Player[3];
+	Player [] computers = new Player[3];
+	
 	/** Couleurs possibles */
 	String[] colorMap = new String[] {"blue", "green", "orange", "purple", "yellow"};
 	/** Tableau traçant les evenements */
@@ -46,13 +50,35 @@ public class Field extends Canvas {
 		this.setFocusTraversable(true);
 		
         gc = this.getGraphicsContext2D();
-        
+        /*Image Bg;
+        ImageView BgImg;
+        Bg = new Image("assets/orc.png");
+        BgImg = new ImageView();
+        BgImg.setImage(Bg);
+        gc.save();
+        gc.drawImage(Bg, 0, 0);
+        gc.restore();
+        */
         /** On initialise le terrain de jeu */
-    	joueurs[0] = new Player(gc, colorMap[0], w/2, h-50, "bottom");
+        /** initialisation des joueurs */
+        computers[0] = new Player(gc, colorMap[0], w/2 + 60 , h-50, "bottom");
+        computers[0].display();
+    	
+        computers[1] = new Player(gc, colorMap[0], w/2, h-50, "bottom");
+        computers[1].display();
+    	
+        computers[2] = new Player(gc, colorMap[0], w/2 - 60, h-50, "bottom");
+        computers[2].display();
+    	
+    	/** initialisation des joueurs */
+        joueurs[0] = new Player(gc, colorMap[1], w/2 + 60, 20, "top");
     	joueurs[0].display();
-
+    	
     	joueurs[1] = new Player(gc, colorMap[1], w/2, 20, "top");
     	joueurs[1].display();
+    	
+    	joueurs[2] = new Player(gc, colorMap[1], w/2 - 60 , 20, "top");
+    	joueurs[2].display();
 
 
 	    /** 
@@ -155,5 +181,8 @@ public class Field extends Canvas {
 
 	public Player[] getJoueurs() {
 		return joueurs;
+	}
+	public Player[] getComputers() {
+		return computers;
 	}
 }

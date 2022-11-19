@@ -26,7 +26,7 @@ public class Player
 	  Image directionArrow;
 	  Sprite sprite;
 	  ImageView PlayerDirectionArrow;
-	  
+	  Projectile P;
 	  GraphicsContext graphicsContext;
 	  
 	  /**
@@ -151,6 +151,8 @@ public class Player
 
 	  void shoot(){
 	  	sprite.playShoot();
+	  	P = new Projectile(graphicsContext, this.x, this.y, 5, angle);
+	  	
 	  }
 	  
 	  /**
