@@ -3,16 +3,20 @@ package fr.icom.info.m1.balleauprisonnier_mvn;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
 
 public class Projectile {
 	double x;     // position horizontale du Projectiole
 	double y; 	  // position verticale du Projectiole
 	private int vitesse ; 
-	private double Direction ; 
+	private double direction ; 
+	
+	Sprite sprite;
 	
 	GraphicsContext graphicsContext;
 	Image ProjImg;
 	ImageView ProjectileImg;
+	
 	/**
 	   * Constructeur du Proectile
 	   * 
@@ -25,8 +29,9 @@ public class Projectile {
 		x = xInit;               
 	    y = yInit;
 		graphicsContext = gc;
+		direction = Dir;
 		
-		ProjImg = new Image("assets/mini_ball.png");
+		ProjImg = new Image("assets/ball.png");
 		
 		ProjectileImg = new ImageView();
 		ProjectileImg.setImage(ProjImg);
@@ -34,18 +39,19 @@ public class Projectile {
 		ProjectileImg.setPreserveRatio(true);
 		ProjectileImg.setSmooth(true);
 		ProjectileImg.setCache(true);
+		
+        
   	}
 	  /**
 	   *  Affichage du Projectile
 	   */
-	  void display()
-	  {
+	void display()
+	{
 		  graphicsContext.save(); // saves the current state on stack, including the current transform
-	     // rotate(graphicsContext, Direction, x + ProjImg.getWidth() / 2, y + ProjImg.getHeight() / 2);
 		  graphicsContext.drawImage(ProjImg, x, y);
-		  graphicsContext.restore(); // back to original state (before rotation)
-	  }
-	
+		  graphicsContext.restore();
+	}
+
 	public int getVitesse() {
 		return vitesse;
 	}
@@ -53,10 +59,17 @@ public class Projectile {
 		this.vitesse = vitesse;
 	}
 	public double getDirection() {
-		return Direction;
+		return direction;
 	}
 	public void setDirection(double direction) {
-		Direction = direction;
+		this.direction = direction;
 	}
-	
+	public void tir() {
+		y +=  Math.sin(getDirection());
+		x +=  Math.cos(getDirection());
+		this.display();
+		
+	}
+		
+		
 }

@@ -20,14 +20,16 @@ import javafx.scene.paint.Color;
 public class Field extends Canvas {
 	
 	/** Joueurs */
-	Player [] joueurs = new Player[3];
-	Player [] computers = new Player[3];
+	Player [] joueurs = new Player[2];
+	Player [] computers = new Player[4];
+	/** tirs */
+	Projectile []  tir = new Projectile[2];
+	
 	
 	/** Couleurs possibles */
 	String[] colorMap = new String[] {"blue", "green", "orange", "purple", "yellow"};
 	/** Tableau traçant les evenements */
     ArrayList<String> input = new ArrayList<String>();
-    
 
     final GraphicsContext gc;
     final int width;
@@ -45,41 +47,35 @@ public class Field extends Canvas {
 		super(w, h); 
 		width = w;
 		height = h;
+		Image bgImg =  new Image("assets/field.png");
 		
 		/** permet de capturer le focus et donc les evenements clavier et souris */
 		this.setFocusTraversable(true);
 		
         gc = this.getGraphicsContext2D();
-        /*Image Bg;
-        ImageView BgImg;
-        Bg = new Image("assets/orc.png");
-        BgImg = new ImageView();
-        BgImg.setImage(Bg);
-        gc.save();
-        gc.drawImage(Bg, 0, 0);
-        gc.restore();
-        */
+  
         /** On initialise le terrain de jeu */
         /** initialisation des joueurs */
-        computers[0] = new Player(gc, colorMap[0], w/2 + 60 , h-50, "bottom");
+        computers[0] = new Player(gc, colorMap[0], w/2 + 40 , h-65, "bottom");
         computers[0].display();
     	
-        computers[1] = new Player(gc, colorMap[0], w/2, h-50, "bottom");
+        computers[1] = new Player(gc, colorMap[0], w/2 - 80 , h-65, "bottom");
         computers[1].display();
     	
-        computers[2] = new Player(gc, colorMap[0], w/2 - 60, h-50, "bottom");
+        computers[2] = new Player(gc, colorMap[1], w/2 + 40, 20, "top");
         computers[2].display();
-    	
+        
+        computers[3] = new Player(gc, colorMap[1], w/2 - 80 , 20, "top");
+        computers[3].display();
+
     	/** initialisation des joueurs */
-        joueurs[0] = new Player(gc, colorMap[1], w/2 + 60, 20, "top");
+        joueurs[0] = new Player(gc, colorMap[1], w/2-20 , 20, "top");
     	joueurs[0].display();
     	
-    	joueurs[1] = new Player(gc, colorMap[1], w/2, 20, "top");
+    	joueurs[1] = new Player(gc, colorMap[1], w/2-20, h-65, "bottom");
     	joueurs[1].display();
     	
-    	joueurs[2] = new Player(gc, colorMap[1], w/2 - 60 , 20, "top");
-    	joueurs[2].display();
-
+    	
 
 	    /** 
 	     * Event Listener du clavier 
@@ -128,6 +124,7 @@ public class Field extends Canvas {
 	            // On nettoie le canvas a chaque frame
 	            gc.setFill( Color.LIGHTGRAY);
 	            gc.fillRect(0, 0, width, height);
+	            gc.drawImage(bgImg, 0, 0);
 	        	
 	            // Deplacement et affichage des joueurs
 	        	for (int i = 0; i < joueurs.length; i++) 
@@ -150,6 +147,8 @@ public class Field extends Canvas {
 	        		}
 	        		if (i==0 && input.contains("M")){
 	        			joueurs[i].shoot();
+	        			tir[0] = new Projectile(gc,joueurs[i].x+20,joueurs[i].y ,1,joueurs[i].angle);
+	        			
 					}
 	        		if (i==1 && input.contains("Q"))
 	        		{
@@ -169,10 +168,15 @@ public class Field extends Canvas {
 	        		}
 	        		if (i==1 && input.contains("SPACE")){
 	        			joueurs[i].shoot();
+	        			tir[1] = new Projectile(gc,joueurs[i].x+20,joueurs[i].y ,1,joueurs[i].angle);
+	        				
 					}
-
-	        		
+	        		if(tir[i] != null) {
+	        			tir[i].tir();
+	        		}
 	        		joueurs[i].display();
+	        		computers[i].display();
+	        		computers[i+2].display(); // kayen double nta3 "i" f computer 
 	    	    }
 	    	}
 	     }.start(); // On lance la boucle de rafraichissement 

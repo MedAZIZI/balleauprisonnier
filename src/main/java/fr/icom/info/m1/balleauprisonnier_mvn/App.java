@@ -43,11 +43,11 @@ public class App extends Application
 		
         root.getChildren().add(gameField.getJoueurs()[0].sprite);
 		root.getChildren().add(gameField.getJoueurs()[1].sprite);
-		root.getChildren().add(gameField.getJoueurs()[2].sprite);
 		
 		root.getChildren().add(gameField.getComputers()[0].sprite);
 		root.getChildren().add(gameField.getComputers()[1].sprite);
 		root.getChildren().add(gameField.getComputers()[2].sprite);
+		root.getChildren().add(gameField.getComputers()[3].sprite);
 		
         // On ajoute la scene a la fenetre et on affiche
         stage.setScene( scene );

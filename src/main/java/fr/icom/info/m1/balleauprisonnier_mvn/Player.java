@@ -151,7 +151,6 @@ public class Player
 
 	  void shoot(){
 	  	sprite.playShoot();
-	  	P = new Projectile(graphicsContext, this.x, this.y, 5, angle);
 	  	
 	  }
 	  
