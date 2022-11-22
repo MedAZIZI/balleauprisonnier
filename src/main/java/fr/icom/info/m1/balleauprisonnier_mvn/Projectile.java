@@ -8,10 +8,12 @@ import javafx.util.Duration;
 public class Projectile {
 	double x;     // position horizontale du Projectiole
 	double y; 	  // position verticale du Projectiole
-	private int vitesse ; 
-	private double direction ; 
 	
-	Sprite sprite;
+	private int vitesse ; 
+	private double direction; 
+	
+	String side;
+	
 	
 	GraphicsContext graphicsContext;
 	Image ProjImg;
@@ -24,13 +26,13 @@ public class Projectile {
 	   * @param color couleur du joueur
 	   * @param yInit position verticale
 	   */
-	Projectile(GraphicsContext gc,double xInit, double yInit, int Vit, double Dir )
+	Projectile(GraphicsContext gc,double xInit, double yInit, int Vit, double Dir,String S )
   	{
 		x = xInit;               
 	    y = yInit;
 		graphicsContext = gc;
 		direction = Dir;
-		
+		side = S;
 		ProjImg = new Image("assets/ball.png");
 		
 		ProjectileImg = new ImageView();
@@ -51,7 +53,12 @@ public class Projectile {
 		  graphicsContext.drawImage(ProjImg, x, y);
 		  graphicsContext.restore();
 	}
-
+	public double getX() {
+		return x;
+	}
+	public double getY() {
+		return y;
+	}
 	public int getVitesse() {
 		return vitesse;
 	}
@@ -65,8 +72,14 @@ public class Projectile {
 		this.direction = direction;
 	}
 	public void tir() {
-		y +=  Math.sin(getDirection());
-		x +=  Math.cos(getDirection());
+		if(this.side=="top") {
+			x +=  Math.cos(Math.toRadians(getDirection()+90));
+			y +=  Math.sin(Math.toRadians(getDirection()+90));
+		}else
+		{
+			x +=  Math.cos(Math.toRadians(getDirection()-90));
+			y +=  Math.sin(Math.toRadians(getDirection()-90));
+		}
 		this.display();
 		
 	}

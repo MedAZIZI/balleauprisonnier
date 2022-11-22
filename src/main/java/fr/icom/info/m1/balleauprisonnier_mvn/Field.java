@@ -23,8 +23,8 @@ public class Field extends Canvas {
 	Player [] joueurs = new Player[2];
 	Player [] computers = new Player[4];
 	/** tirs */
-	Projectile []  tir = new Projectile[2];
-	
+	Projectile []  tir = new Projectile[6];
+	 
 	
 	/** Couleurs possibles */
 	String[] colorMap = new String[] {"blue", "green", "orange", "purple", "yellow"};
@@ -34,7 +34,6 @@ public class Field extends Canvas {
     final GraphicsContext gc;
     final int width;
     final int height;
-    
     /**
      * Canvas dans lequel on va dessiner le jeu.
      * 
@@ -119,8 +118,10 @@ public class Field extends Canvas {
 	     */
 	    new AnimationTimer() 
 	    {
+	    	
 	        public void handle(long currentNanoTime)
-	        {	 
+	        {	
+	        	
 	            // On nettoie le canvas a chaque frame
 	            gc.setFill( Color.LIGHTGRAY);
 	            gc.fillRect(0, 0, width, height);
@@ -128,7 +129,7 @@ public class Field extends Canvas {
 	        	
 	            // Deplacement et affichage des joueurs
 	        	for (int i = 0; i < joueurs.length; i++) 
-	    	    {
+	    	    {   
 	        		if (i==0 && input.contains("LEFT"))
 	        		{
 	        			joueurs[i].moveLeft();
@@ -146,9 +147,11 @@ public class Field extends Canvas {
 	        			joueurs[i].turnRight();	        			
 	        		}
 	        		if (i==0 && input.contains("M")){
-	        			joueurs[i].shoot();
-	        			tir[0] = new Projectile(gc,joueurs[i].x+20,joueurs[i].y ,1,joueurs[i].angle);
 	        			
+	        			joueurs[i].shoot();
+	        			if(tir[i] == null) {
+	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+80 ,1,joueurs[i].angle,"top");
+	        			}
 					}
 	        		if (i==1 && input.contains("Q"))
 	        		{
@@ -168,25 +171,65 @@ public class Field extends Canvas {
 	        		}
 	        		if (i==1 && input.contains("SPACE")){
 	        			joueurs[i].shoot();
-	        			tir[1] = new Projectile(gc,joueurs[i].x+20,joueurs[i].y ,1,joueurs[i].angle);
-	        				
-					}
-	        		if(tir[i] != null) {
-	        			tir[i].tir();
+	        			if(tir[i] == null) {
+	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+60 ,1,joueurs[i].angle,"bottom");
+	        			}
 	        		}
+	        		
 	        		joueurs[i].display();
 	        		computers[i].display();
 	        		computers[i+2].display(); // kayen double nta3 "i" f computer 
+	        		distroy_projectile(tir);
+	        		colision(tir,computers);
+	    	    }
+	        	for (int i = 0; i < tir.length; i++) 
+	    	    {
+	        		if(tir[i] != null) {
+	        			tir[i].tir();
+	        		}
 	    	    }
 	    	}
 	     }.start(); // On lance la boucle de rafraichissement 
 	     
 	}
-
+	public void distroy_projectile(Projectile [] P ) {
+		for(int i = 0;i<P.length;i++) {
+			if(P[i] != null) {
+				double x = P[i].getX();
+				double y = P[i].getY();
+				if (x>600 || x<0 ||y>600 || y<0) {
+					P[i] = null;
+				}
+			}
+		}
+	}
+	public void colision(Projectile [] P,Player[] J) {
+		
+		for(int i =0;i<P.length;i++) {
+			
+			if(P[i] != null) {
+				for(int j=0;j<J.length;j++) {
+					if(P[i].side!=J[j].side && P[i].getX() > J[j].getX() &&  P[i].getX()+10 < J[j].getX()+95) {
+						if(P[i].getY() > J[j].getY() &&  P[i].getY()+10 < J[j].getY()+95) {
+							// to do apres colision
+							
+							J[j].vie = false;
+							J[j].sprite = null;
+							P[i] = null;
+							break;
+						}
+					}
+						
+				}
+			}
+			
+		}
+	}
 	public Player[] getJoueurs() {
 		return joueurs;
 	}
 	public Player[] getComputers() {
 		return computers;
 	}
+	
 }
