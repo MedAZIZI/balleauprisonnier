@@ -200,7 +200,7 @@ public class Field extends Canvas {
 	        		distroy_projectile(tir);
 	        		colision(tir,computers);
 	        		colision(tir,joueurs);
-	        		//moveComputer(computers);
+	        		moveComputer(computers);
 	    	    }
 	        	for (int i = 0; i < tir.length; i++) 
 	    	    {
@@ -238,10 +238,11 @@ public class Field extends Canvas {
 								P[i].getY()    < player[j].getY()+95) {
 							
 							// to do apres colision
-							System.out.print("t9aaaaaaaas");
+							System.out.print("colision \n");
 							P[i] = null; 			// arreter le projectile 
 							player[j].setVie(false); 		// mettre fin a la vie du joueur
 							player[j].spriteAnimate();	// faire disparaitre le joueur
+							
 							break; 					// sortir de la boucle 
 							
 						}
