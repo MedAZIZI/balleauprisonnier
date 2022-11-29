@@ -29,7 +29,7 @@ public class App extends Application
         Scene scene = new Scene( root );
         
         // On cree le terrain de jeu et on l'ajoute a la racine de la scene
-        Field gameField = new Field(scene, 600, 600 );
+        Field gameField = Field.Field(scene, 600, 600 );
 
       
         root.getChildren().add(gameField);

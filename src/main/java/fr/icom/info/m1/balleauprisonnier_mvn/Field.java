@@ -21,6 +21,9 @@ import controllers.PlayerController;
  */
 public class Field extends Canvas {
 	
+	
+	private static Field single_field = null;
+	
 	/** Joueurs */
 	PlayerInterface [] joueurs = new PlayerInterface[2];
 	PlayerInterface [] computers = new PlayerInterface[4];
@@ -44,12 +47,25 @@ public class Field extends Canvas {
      * @param h hauteur du canvas
      */
     Image bgImg =  new Image("assets/field.png");
+    
+    
+    // verifier la creation d'un seul terrain de jeu  a l'aide du design pattern singleton
+    // @Singelton
+    public static Field Field(Scene scene, int w, int h)
+    {
+        // To ensure only one instance is created
+        if (single_field == null) {
+        	single_field = new Field(scene,w,h);
+        }
+        return single_field;
+    }
+    
+    
 	public Field(Scene scene, int w, int h) 
 	{
-		super(w, h); 
-		width = w;
-		height = h;
-		
+			super(w, h); 
+			width = w;
+			height = h;
 		/** permet de capturer le focus et donc les evenements clavier et souris */
 		this.setFocusTraversable(true);
 		
@@ -195,7 +211,8 @@ public class Field extends Canvas {
 	    	}
 	     }.start(); // On lance la boucle de rafraichissement 
 	     
-	}
+		
+	}	
 	public void distroy_projectile(Projectile [] P ) {
 		for(int i = 0;i<P.length;i++) {
 			if(P[i] != null) {

@@ -7,7 +7,8 @@ import javafx.scene.canvas.GraphicsContext;
 
 public class PlayerController {
 
-	// use getShape method to get object of type shape
+	// creation des joueurs a l'aide du design pattern Factory
+	// @Factory 
 	public PlayerInterface getPlayer(String PlayerType, GraphicsContext gc, String color, int xInit, int yInit,
 			String side) {
 
