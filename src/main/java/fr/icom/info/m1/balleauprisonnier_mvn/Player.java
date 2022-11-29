@@ -175,10 +175,21 @@ public class Player {
 		if(vie) {
 			if (!sprite.isRunning) {
 				sprite.playContinuously();
+				
 			}
 			sprite.setX(x);
 			sprite.setY(y);
 		}
+		else {
+			sprite.setImage(null);
+			
+		}
 	}
 
 }
+//public class Human extand Player {
+//	
+//	
+//	
+//	
+//}

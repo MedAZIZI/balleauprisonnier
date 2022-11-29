@@ -2,6 +2,7 @@ package fr.icom.info.m1.balleauprisonnier_mvn;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Classe gerant le terrain de jeu.
@@ -41,12 +43,12 @@ public class Field extends Canvas {
      * @param w largeur du canvas
      * @param h hauteur du canvas
      */
+    Image bgImg =  new Image("assets/field.png");
 	public Field(Scene scene, int w, int h) 
 	{
 		super(w, h); 
 		width = w;
 		height = h;
-		Image bgImg =  new Image("assets/field.png");
 		
 		/** permet de capturer le focus et donc les evenements clavier et souris */
 		this.setFocusTraversable(true);
@@ -150,7 +152,7 @@ public class Field extends Canvas {
 	        			
 	        			joueurs[i].shoot();
 	        			if(tir[i] == null) {
-	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+80 ,3,joueurs[i].angle,"top");
+	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+80 ,4,joueurs[i].angle,"top");
 	        			}
 					}
 	        		if (i==1 && input.contains("Q"))
@@ -172,7 +174,7 @@ public class Field extends Canvas {
 	        		if (i==1 && input.contains("SPACE")){
 	        			joueurs[i].shoot();
 	        			if(tir[i] == null) {
-	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+60 ,2,joueurs[i].angle,"bottom");
+	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+60 ,3,joueurs[i].angle,"bottom");
 	        			}
 	        		}
 	        		
@@ -181,6 +183,8 @@ public class Field extends Canvas {
 	        		computers[i+2].display(); // kayen double nta3 "i" f computer 
 	        		distroy_projectile(tir);
 	        		colision(tir,computers);
+	        		colision(tir,joueurs);
+	        		moveComputer(computers);
 	    	    }
 	        	for (int i = 0; i < tir.length; i++) 
 	    	    {
@@ -204,7 +208,6 @@ public class Field extends Canvas {
 		}
 	}
 	public void colision(Projectile [] P,Player[] J) {
-		
 		for(int i =0;i<P.length;i++) {
 			
 			if(P[i] != null) {
@@ -212,17 +215,33 @@ public class Field extends Canvas {
 					if(P[i].side!=J[j].side && P[i].getX() > J[j].getX() &&  P[i].getX()+10 < J[j].getX()+95) {
 						if(P[i].getY() > J[j].getY() &&  P[i].getY()+10 < J[j].getY()+95) {
 							// to do apres colision
-							
-							J[j].vie = false;
-							//J[j].tilesheetImage = new Image("assets/skeleton.png");
-							P[i] = null;
-							break;
+							P[i] = null; 			// arreter le projectile 
+							J[j].vie = false; 		// mettre fin a la vie du joueur
+							J[j].spriteAnimate();	// faire disparaitre le joueur
+							break; 					// sortir de la boucle 
 						}
 					}
 						
 				}
 			}
 			
+		}
+	}
+	public void moveComputer(Player[] C) {
+		for(int i =0;i<C.length;i++) {
+			if(C[i].getX() < this.width && C[i].getX() > 0) {
+				Random randomGenerator = new Random();
+				int m = randomGenerator.nextInt(2);
+				//fake IA 
+				if (m == 0) {
+					C[i].moveLeft();
+//					C[i].moveLeft();
+				}else {
+					C[i].moveRight();
+//					C[i].moveRight();
+				}
+				
+			}
 		}
 	}
 	public Player[] getJoueurs() {
