@@ -71,7 +71,9 @@ class Sprite extends ImageView {
         isRunning = false;
     }
 
-    public void playContinuously() {
+   
+
+	public void playContinuously() {
         isRunning = true;
         frameCounter.set(0);
         timeline = walkTimeline;

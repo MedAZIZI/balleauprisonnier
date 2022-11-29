@@ -13,7 +13,7 @@ import javafx.util.Duration;
  * Classe gerant un joueur
  *
  */
-public class Player implements PlayerInterface  {
+public class Computer  implements PlayerInterface  {
 	double x; // position horizontale du joueur
 	double y; // position verticale du joueur
 
@@ -22,7 +22,7 @@ public class Player implements PlayerInterface  {
 	String playerColor;
 	String side;
 	//vie 
-	public Boolean vie;
+	Boolean vie;
 	// On une image globale du joueur
 	Image directionArrow;
 	Sprite sprite;
@@ -37,7 +37,7 @@ public class Player implements PlayerInterface  {
 	 * @param color couleur du joueur
 	 * @param yInit position verticale
 	 */
-	public Player(GraphicsContext gc, String color, int xInit, int yInit, String side) {
+	public Computer(GraphicsContext gc, String color, int xInit, int yInit, String side) {
 		// Tous les joueurs commencent au centre du canvas,
 		vie = true;
 		x = xInit;
@@ -50,10 +50,10 @@ public class Player implements PlayerInterface  {
 		// On charge la representation du joueur
 		if (side == "top") {
 			directionArrow = new Image("assets/PlayerArrowDown.png");
-			tilesheetImage = new Image("assets/PlayerRed.png");
+			tilesheetImage = new Image("assets/skeleton.png");
 		} else {
 			directionArrow = new Image("assets/PlayerArrowUp.png");
-			tilesheetImage = new Image("assets/PlayerBlue.png");
+			tilesheetImage = new Image("assets/skeleton.png");
 		}
 
 		PlayerDirectionArrow = new ImageView();
@@ -62,17 +62,11 @@ public class Player implements PlayerInterface  {
 		PlayerDirectionArrow.setPreserveRatio(true);
 		PlayerDirectionArrow.setSmooth(true);
 		PlayerDirectionArrow.setCache(true);
-		
-		
 
-		//Image tilesheetImage1 = new Image("assets/orc.png");
+		// Image tilesheetImage = new Image("assets/orc.png");
 		sprite = new Sprite(tilesheetImage, 0, 0, Duration.seconds(.2), side);
 		sprite.setX(x);
 		sprite.setY(y);
-		
-
-		
-		
 		// directionArrow = sprite.getClip().;
 
 		// Tous les joueurs ont une vitesse aleatoire entre 0.0 et 1.0
@@ -83,6 +77,7 @@ public class Player implements PlayerInterface  {
 		// step = 1;
 
 	}
+
 	@Override
 	public double getX() {
 		return x;
@@ -95,7 +90,6 @@ public class Player implements PlayerInterface  {
 	public double getY() {
 		return y;
 	}
-	
 
 	public void setY(double y) {
 		this.y = y;
@@ -116,6 +110,7 @@ public class Player implements PlayerInterface  {
 	public void setVie(boolean v) {
 		this.vie = v;
 	}
+	
 	/**
 	 * Affichage du joueur
 	 */
@@ -185,7 +180,7 @@ public class Player implements PlayerInterface  {
 	}
 	@Override
 	public void shoot() {
-		this.getSprite().playShoot();
+		sprite.playShoot();
 	}
 
 	/**
@@ -199,18 +194,17 @@ public class Player implements PlayerInterface  {
 	public void spriteAnimate() {
 		
 		if(vie) {
-			if (!this.getSprite().isRunning) {
-				this.getSprite().playContinuously();
+			if (!sprite.isRunning) {
+				sprite.playContinuously();
 				
 			}
-			this.getSprite().setX(x);
-			this.getSprite().setY(y);
+			sprite.setX(x);
+			sprite.setY(y);
 		}
 		else {
-			this.getSprite().setImage(null);
+			sprite.setImage(null);
 			
 		}
 	}
-
 }
 

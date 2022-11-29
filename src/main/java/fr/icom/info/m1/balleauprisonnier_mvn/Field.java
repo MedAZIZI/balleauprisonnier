@@ -10,10 +10,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import java.util.concurrent.TimeUnit;
+
+import controllers.PlayerController;
 
 /**
  * Classe gerant le terrain de jeu.
@@ -22,11 +22,11 @@ import java.util.concurrent.TimeUnit;
 public class Field extends Canvas {
 	
 	/** Joueurs */
-	Player [] joueurs = new Player[2];
-	Player [] computers = new Player[4];
+	PlayerInterface [] joueurs = new PlayerInterface[2];
+	PlayerInterface [] computers = new PlayerInterface[4];
 	/** tirs */
 	Projectile []  tir = new Projectile[6];
-	 
+	PlayerController JoueurFactory = new PlayerController();
 	
 	/** Couleurs possibles */
 	String[] colorMap = new String[] {"blue", "green", "orange", "purple", "yellow"};
@@ -57,23 +57,23 @@ public class Field extends Canvas {
   
         /** On initialise le terrain de jeu */
         /** initialisation des joueurs */
-        computers[0] = new Player(gc, colorMap[0], w/2 + 40 , h-65, "bottom");
+        computers[0] = JoueurFactory.getPlayer("Computer", gc, colorMap[0], w/2 + 40 , h-65, "bottom");
         computers[0].display();
     	
-        computers[1] = new Player(gc, colorMap[0], w/2 - 80 , h-65, "bottom");
+        computers[1] = JoueurFactory.getPlayer("Computer",gc, colorMap[0], w/2 - 80 , h-65, "bottom");
         computers[1].display();
     	
-        computers[2] = new Player(gc, colorMap[1], w/2 + 40, 20, "top");
+        computers[2] = JoueurFactory.getPlayer("Computer",gc, colorMap[1], w/2 + 40, 20, "top");
         computers[2].display();
         
-        computers[3] = new Player(gc, colorMap[1], w/2 - 80 , 20, "top");
+        computers[3] = JoueurFactory.getPlayer("Computer",gc, colorMap[1], w/2 - 80 , 20, "top");
         computers[3].display();
 
     	/** initialisation des joueurs */
-        joueurs[0] = new Player(gc, colorMap[1], w/2-20 , 20, "top");
+        joueurs[0]  = JoueurFactory.getPlayer("Player",gc, colorMap[1], w/2-20 , 20, "top");
     	joueurs[0].display();
     	
-    	joueurs[1] = new Player(gc, colorMap[1], w/2-20, h-65, "bottom");
+    	joueurs[1] = JoueurFactory.getPlayer("Player",gc, colorMap[1], w/2-20, h-65, "bottom");
     	joueurs[1].display();
     	
     	
@@ -152,7 +152,7 @@ public class Field extends Canvas {
 	        			
 	        			joueurs[i].shoot();
 	        			if(tir[i] == null) {
-	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+80 ,4,joueurs[i].angle,"top");
+	        				tir[i] = new Projectile(gc,joueurs[i].getX()+30,joueurs[i].getY()+80 ,4,joueurs[i].getAngle(),"top");
 	        			}
 					}
 	        		if (i==1 && input.contains("Q"))
@@ -174,7 +174,7 @@ public class Field extends Canvas {
 	        		if (i==1 && input.contains("SPACE")){
 	        			joueurs[i].shoot();
 	        			if(tir[i] == null) {
-	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+60 ,3,joueurs[i].angle,"bottom");
+	        				tir[i] = new Projectile(gc,joueurs[i].getX()+30,joueurs[i].getY()+60 ,4,joueurs[i].getAngle(),"bottom");
 	        			}
 	        		}
 	        		
@@ -184,7 +184,7 @@ public class Field extends Canvas {
 	        		distroy_projectile(tir);
 	        		colision(tir,computers);
 	        		colision(tir,joueurs);
-	        		moveComputer(computers);
+	        		//moveComputer(computers);
 	    	    }
 	        	for (int i = 0; i < tir.length; i++) 
 	    	    {
@@ -207,18 +207,26 @@ public class Field extends Canvas {
 			}
 		}
 	}
-	public void colision(Projectile [] P,Player[] J) {
+	public void colision(Projectile [] P,PlayerInterface[] player) {
 		for(int i =0;i<P.length;i++) {
 			
 			if(P[i] != null) {
-				for(int j=0;j<J.length;j++) {
-					if(P[i].side!=J[j].side && P[i].getX() > J[j].getX() &&  P[i].getX()+10 < J[j].getX()+95) {
-						if(P[i].getY() > J[j].getY() &&  P[i].getY()+10 < J[j].getY()+95) {
+				for(int j=0;j<player.length;j++) {
+//					System.out.println( "side " + player[i].getSide() + " "+  P[i].getX() + " " + player[j].getX());
+					if(P[i].side!= player[j].getSide() && 
+							    P[i].getX()    > player[j].getX() 
+							&&  P[i].getX()    < player[j].getX()+90) {
+						
+						if(     P[i].getY()    > player[j].getY() &&  
+								P[i].getY()    < player[j].getY()+95) {
+							
 							// to do apres colision
+							System.out.print("t9aaaaaaaas");
 							P[i] = null; 			// arreter le projectile 
-							J[j].vie = false; 		// mettre fin a la vie du joueur
-							J[j].spriteAnimate();	// faire disparaitre le joueur
+							player[j].setVie(false); 		// mettre fin a la vie du joueur
+							player[j].spriteAnimate();	// faire disparaitre le joueur
 							break; 					// sortir de la boucle 
+							
 						}
 					}
 						
@@ -227,27 +235,27 @@ public class Field extends Canvas {
 			
 		}
 	}
-	public void moveComputer(Player[] C) {
-		for(int i =0;i<C.length;i++) {
-			if(C[i].getX() < this.width && C[i].getX() > 0) {
+	public void moveComputer(PlayerInterface[] computers2) {
+		for(int i =0;i<computers2.length;i++) {
+			if(computers2[i].getX() < this.width && computers2[i].getX() > 0) {
 				Random randomGenerator = new Random();
 				int m = randomGenerator.nextInt(2);
 				//fake IA 
 				if (m == 0) {
-					C[i].moveLeft();
+					computers2[i].moveLeft();
 //					C[i].moveLeft();
 				}else {
-					C[i].moveRight();
+					computers2[i].moveRight();
 //					C[i].moveRight();
 				}
 				
 			}
 		}
 	}
-	public Player[] getJoueurs() {
+	public PlayerInterface[] getJoueurs() {
 		return joueurs;
 	}
-	public Player[] getComputers() {
+	public PlayerInterface[] getComputers() {
 		return computers;
 	}
 	

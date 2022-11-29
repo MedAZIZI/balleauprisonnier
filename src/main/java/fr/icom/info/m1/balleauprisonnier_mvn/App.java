@@ -1,17 +1,9 @@
 package fr.icom.info.m1.balleauprisonnier_mvn;
-
-
-import java.awt.Button;
-import java.awt.Image;
-
+import fr.icom.info.m1.balleauprisonnier_mvn.Computer;
+import fr.icom.info.m1.balleauprisonnier_mvn.Player;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -39,16 +31,17 @@ public class App extends Application
         // On cree le terrain de jeu et on l'ajoute a la racine de la scene
         Field gameField = new Field(scene, 600, 600 );
 
-        root.getChildren().add(gameField );
+      
+        root.getChildren().add(gameField);
+        root.getChildren().add(gameField.getJoueurs()[0].getSprite());
+		root.getChildren().add(gameField.getJoueurs()[1].getSprite());
 		
-        root.getChildren().add(gameField.getJoueurs()[0].sprite);
-		root.getChildren().add(gameField.getJoueurs()[1].sprite);
-		
-		root.getChildren().add(gameField.getComputers()[0].sprite);
-		root.getChildren().add(gameField.getComputers()[1].sprite);
-		root.getChildren().add(gameField.getComputers()[2].sprite);
-		root.getChildren().add(gameField.getComputers()[3].sprite);
-		
+		//System.out.print(PlayerInterface.sprite);
+		root.getChildren().add(gameField.getComputers()[0].getSprite());
+		root.getChildren().add(gameField.getComputers()[1].getSprite());
+		root.getChildren().add(gameField.getComputers()[2].getSprite());
+		root.getChildren().add(gameField.getComputers()[3].getSprite());
+//		
         // On ajoute la scene a la fenetre et on affiche
         stage.setScene( scene );
         stage.show();
