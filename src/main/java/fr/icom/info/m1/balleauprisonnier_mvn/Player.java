@@ -29,7 +29,7 @@ public class Player {
 	ImageView PlayerDirectionArrow;
 	Projectile P;
 	GraphicsContext graphicsContext;
-
+	Image tilesheetImage;
 	/**
 	 * Constructeur du Joueur
 	 * 
@@ -46,7 +46,7 @@ public class Player {
 		playerColor = color;
 		this.side =side;
 		angle = 0;
-		Image tilesheetImage;
+		
 		// On charge la representation du joueur
 		if (side == "top") {
 			directionArrow = new Image("assets/PlayerArrowDown.png");
@@ -142,7 +142,7 @@ public class Player {
 		} else {
 			// angle += 1;
 		}
-		System.out.println(angle);
+		//System.out.println(angle);
 
 	}
 
@@ -155,7 +155,7 @@ public class Player {
 		} else {
 			// angle -= 1;
 		}
-		System.out.println(angle);
+		//System.out.println(angle);
 	}
 
 	void shoot() {
@@ -171,7 +171,7 @@ public class Player {
 	}
 
 	void spriteAnimate() {
-		// System.out.println("Animating sprite");
+		
 		if(vie) {
 			if (!sprite.isRunning) {
 				sprite.playContinuously();

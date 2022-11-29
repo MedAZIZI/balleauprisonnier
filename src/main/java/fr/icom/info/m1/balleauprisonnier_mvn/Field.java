@@ -150,7 +150,7 @@ public class Field extends Canvas {
 	        			
 	        			joueurs[i].shoot();
 	        			if(tir[i] == null) {
-	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+80 ,1,joueurs[i].angle,"top");
+	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+80 ,3,joueurs[i].angle,"top");
 	        			}
 					}
 	        		if (i==1 && input.contains("Q"))
@@ -172,7 +172,7 @@ public class Field extends Canvas {
 	        		if (i==1 && input.contains("SPACE")){
 	        			joueurs[i].shoot();
 	        			if(tir[i] == null) {
-	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+60 ,1,joueurs[i].angle,"bottom");
+	        				tir[i] = new Projectile(gc,joueurs[i].x+30,joueurs[i].y+60 ,2,joueurs[i].angle,"bottom");
 	        			}
 	        		}
 	        		
@@ -214,7 +214,7 @@ public class Field extends Canvas {
 							// to do apres colision
 							
 							J[j].vie = false;
-							J[j].sprite = null;
+							//J[j].tilesheetImage = new Image("assets/skeleton.png");
 							P[i] = null;
 							break;
 						}

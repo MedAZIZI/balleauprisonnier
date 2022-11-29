@@ -33,6 +33,7 @@ public class Projectile {
 		graphicsContext = gc;
 		direction = Dir;
 		side = S;
+		this.vitesse = Vit;
 		ProjImg = new Image("assets/ball.png");
 		
 		ProjectileImg = new ImageView();
@@ -73,12 +74,12 @@ public class Projectile {
 	}
 	public void tir() {
 		if(this.side=="top") {
-			x +=  Math.cos(Math.toRadians(getDirection()+90));
-			y +=  Math.sin(Math.toRadians(getDirection()+90));
+			x +=  Math.cos(Math.toRadians(getDirection()+90)) * this.vitesse;
+			y +=  Math.sin(Math.toRadians(getDirection()+90)) * this.vitesse;
 		}else
 		{
-			x +=  Math.cos(Math.toRadians(getDirection()-90));
-			y +=  Math.sin(Math.toRadians(getDirection()-90));
+			x +=  Math.cos(Math.toRadians(getDirection()-90)) * this.vitesse;;
+			y +=  Math.sin(Math.toRadians(getDirection()-90)) * this.vitesse;;
 		}
 		this.display();
 		
